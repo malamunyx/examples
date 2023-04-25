@@ -4,7 +4,9 @@
 
 /* 
  * Given an array of integers, records the size, and length
- * of each tokem.
+ * of each token.
+ *
+ * Integer of zero are delimiters.
  * */
 
 int main(void) {
