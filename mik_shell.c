@@ -12,8 +12,15 @@ void free_argv(char ***argv, int argc);
 int main(void) {
 	char buf[BUFSIZ];
 
-	while (fgets(buf, BUFSIZ, stdin) != NULL) {
-		/* Remove newline */
+	while (1) {
+		printf("> ");
+		char *res = fgets(buf, BUFSIZ, stdin);
+
+		if (res == NULL) {
+			printf("\n");
+			break;
+		}
+
 		buf[strcspn(buf, "\n")] = 0;
 		
 		int argc = get_argc(buf);
