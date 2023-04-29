@@ -37,6 +37,8 @@ void pqueue_enqueue(struct queue *q, struct node *n, int (*cmp)(int, int)) {
 }
 
 void pqueue_delete(struct queue *q, struct node *del) {
+	/* Traversal not necessary */
+	/*
 	struct node **cursor = &(q->sentinel.next);
 	
 	while (*cursor != &q->sentinel && *cursor != del) {
@@ -46,6 +48,10 @@ void pqueue_delete(struct queue *q, struct node *del) {
 	if (*cursor == &q->sentinel) {
 		return;
 	}
+	*/
+
+	if (del == &q->sentinel)
+		return;
 	
 	del->prev->next = del->next;
 	del->next->prev = del->prev;
@@ -64,10 +70,10 @@ void print_pqueue(struct queue *q) {
 		printf("%d [ORD: %d]", (*cursor)->elem, (*cursor)->order);
 
 		((*cursor)->next == &(q->sentinel)) ?
-			printf("\t\tSENTINEL") :
-			printf("\t\tNEXT [%d, ord %d]", (*cursor)->next->elem, (*cursor)->next->order);
+			printf("\tNEXT [SENTINEL]") :
+			printf("\tNEXT [%d, ord %d]", (*cursor)->next->elem, (*cursor)->next->order);
 		((*cursor)->prev == &(q->sentinel)) ?
-			printf("\t\tSENTINEL\n") :
+			printf("\t\tPREV [SENTINEL]\n") :
 			printf("\t\tPREV [%d, ord %d]\n", (*cursor)->prev->elem, (*cursor)->prev->order);
 		cursor = &(*cursor)->next;
 	}
