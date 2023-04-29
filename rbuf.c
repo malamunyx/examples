@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-struct node { int elem;
+struct node { 
+	int elem;
 	int order;
 	struct node *next;
 	struct node *prev;
@@ -19,7 +20,7 @@ void init_queue(struct queue *q) {
 	q->sentinel.order = -1;
 }
 
-void pqueue_enqueue(struct queue *q, struct node *n, int (*cmp)(int, int)) {
+void enqueue(struct queue *q, struct node *n, int (*cmp)(int, int)) {
 	struct node **cursor = &(q->sentinel.next);
 	
 	while (*cursor != &q->sentinel) {
@@ -36,7 +37,7 @@ void pqueue_enqueue(struct queue *q, struct node *n, int (*cmp)(int, int)) {
 	n->prev->next = n;
 }
 
-void pqueue_delete(struct queue *q, struct node *del) {
+void delete(struct queue *q, struct node *del) {
 	/* Traversal not necessary */
 	/*
 	struct node **cursor = &(q->sentinel.next);
@@ -59,8 +60,8 @@ void pqueue_delete(struct queue *q, struct node *del) {
 	//free(del);
 }
 
-void pqueue_dequeue(struct queue *q) {
-	pqueue_delete(q, q->sentinel.next);
+void dequeue(struct queue *q) {
+	delete(q, q->sentinel.next);
 }
 
 void print_pqueue(struct queue *q) {
@@ -113,28 +114,28 @@ int main(void) {
 	struct queue q;
 	init_queue(&q);
 
-	pqueue_enqueue(&q, a, cmp_max);
-	pqueue_enqueue(&q, b, cmp_max);
-	pqueue_enqueue(&q, c, cmp_max);
-	pqueue_enqueue(&q, d, cmp_max);
-	pqueue_enqueue(&q, e, cmp_max);
-	pqueue_enqueue(&q, f, cmp_max);
-	pqueue_enqueue(&q, g, cmp_max);
-	pqueue_enqueue(&q, h, cmp_max);
+	enqueue(&q, a, cmp_max);
+	enqueue(&q, b, cmp_max);
+	enqueue(&q, c, cmp_max);
+	enqueue(&q, d, cmp_max);
+	enqueue(&q, e, cmp_max);
+	enqueue(&q, f, cmp_max);
+	enqueue(&q, g, cmp_max);
+	enqueue(&q, h, cmp_max);
 
 	print_pqueue(&q);
 
 	puts("Deleting 4");
 	sleep(1);
 
-	pqueue_delete(&q, d);
+	delete(&q, d);
 	print_pqueue(&q);
 
 	for (int i = 0; i < 9; i++) {
 	puts("Dequeueing");
 	sleep(1);
 
-	pqueue_dequeue(&q);
+	dequeue(&q);
 	print_pqueue(&q);
 	}
 
