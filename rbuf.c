@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
-struct node {
-	int elem;
+struct node { int elem;
 	int order;
 	struct node *next;
 	struct node *prev;
@@ -62,8 +62,13 @@ void print_pqueue(struct queue *q) {
 
 	while (*cursor != &q->sentinel) {
 		printf("%d [ORD: %d]", (*cursor)->elem, (*cursor)->order);
-		printf("\t\tNEXT [%d, ord%d]", (*cursor)->next->elem, (*cursor)->next->order);
-		printf("\t\tPREV [%d, ord%d]\n", (*cursor)->prev->elem, (*cursor)->prev->order);
+
+		((*cursor)->next == &(q->sentinel)) ?
+			printf("\t\tSENTINEL") :
+			printf("\t\tNEXT [%d, ord %d]", (*cursor)->next->elem, (*cursor)->next->order);
+		((*cursor)->prev == &(q->sentinel)) ?
+			printf("\t\tSENTINEL\n") :
+			printf("\t\tPREV [%d, ord %d]\n", (*cursor)->prev->elem, (*cursor)->prev->order);
 		cursor = &(*cursor)->next;
 	}
 }
@@ -113,14 +118,19 @@ int main(void) {
 
 	print_pqueue(&q);
 
-	puts("After deleting order 4");
+	puts("Deleting 4");
+	sleep(1);
 
 	pqueue_delete(&q, d);
 	print_pqueue(&q);
 
-	puts("After dequeueing");
+	for (int i = 0; i < 9; i++) {
+	puts("Dequeueing");
+	sleep(1);
+
 	pqueue_dequeue(&q);
 	print_pqueue(&q);
+	}
 
 	free(a);
 	free(b);
