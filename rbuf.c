@@ -36,7 +36,25 @@ void pqueue_enqueue(struct queue *q, struct node *n, int (*cmp)(int, int)) {
 	n->prev->next = n;
 }
 
-void pqueue_dequeue(struct queue *q, struct node *del) {
+void pqueue_delete(struct queue *q, struct node *del) {
+	struct node **cursor = &(q->sentinel.next);
+	
+	while (*cursor != &q->sentinel && *cursor != del) {
+		cursor = &(*cursor)->next;
+	}
+
+	if (*cursor == &q->sentinel) {
+		return;
+	}
+	
+	del->prev->next = del->next;
+	del->next->prev = del->prev;
+
+	//free(del);
+}
+
+void pqueue_dequeue(struct queue *q) {
+	pqueue_delete(q, q->sentinel.next);
 }
 
 void print_pqueue(struct queue *q) {
@@ -93,6 +111,15 @@ int main(void) {
 	pqueue_enqueue(&q, g, cmp_max);
 	pqueue_enqueue(&q, h, cmp_max);
 
+	print_pqueue(&q);
+
+	puts("After deleting order 4");
+
+	pqueue_delete(&q, d);
+	print_pqueue(&q);
+
+	puts("After dequeueing");
+	pqueue_dequeue(&q);
 	print_pqueue(&q);
 
 	free(a);
